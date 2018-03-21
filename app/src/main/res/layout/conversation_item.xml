@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFCDD2"
+            android:layout_centerInParent="true"
+            android:padding="10dp">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true">
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="New User"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black"
+                    android:layout_weight="1" />
+                <TextView
+                    android:id="@+id/tv_msg_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="1st Dec, 17 06:12"
+                    android:textColor="@android:color/black"
+                    android:gravity="right"
+                    android:layout_weight="2"
+                     />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:layout_centerInParent="true">
+                <TextView
+                    android:id="@+id/tv_msg_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Hello are you omer from Real estate ?"
+                    android:textColor="@android:color/black"
+                    android:layout_weight="1" />
+                <TextView
+                    android:id="@+id/tv_conversation_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:textColor="@android:color/black"
+                    android:layout_weight="1" />
+                <TextView
+                    android:id="@+id/tv_user_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:textColor="@android:color/black"
+                    android:layout_weight="1" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
