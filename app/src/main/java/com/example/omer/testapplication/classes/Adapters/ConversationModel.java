@@ -9,11 +9,12 @@ public class ConversationModel {
     public String MessageText;
     public String ReceiverName;
     public String SendererName;
+    public String SenderName;
     public String SenderImage;
     public String ReceiverImage;
     public int MsgStatus;
 
-    public ConversationModel(int id, int conversationID, int senderID, int receiverID, String msgDate, String messageText, String receiverName, String sendererName, String senderImage, String receiverImage, int msgStatus) {
+    public ConversationModel(int id, int conversationID, int senderID, int receiverID, String msgDate, String messageText, String receiverName, String sendererName, String senderName, String senderImage, String receiverImage, int msgStatus) {
         Id = id;
         ConversationID = conversationID;
         SenderID = senderID;
@@ -25,6 +26,7 @@ public class ConversationModel {
         SenderImage = senderImage;
         ReceiverImage = receiverImage;
         MsgStatus = msgStatus;
+        SenderName = senderName;
     }
 
     public int getId() {
@@ -113,6 +115,14 @@ public class ConversationModel {
 
     public void setMsgStatus(int msgStatus) {
         MsgStatus = msgStatus;
+    }
+
+    public String getSenderName() {
+        return SenderName;
+    }
+
+    public void setSenderName(String senderName) {
+        SenderName = senderName;
     }
 
 }

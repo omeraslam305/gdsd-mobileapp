@@ -1,6 +1,7 @@
 package com.example.omer.testapplication;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ public class UserConversationActivity extends AppCompatActivity {
     private ProgressDialog pDialog;
     ListView listView;
     ArrayList<UserConversationModel> dataModels;
+    String userId;
     private static UserConvAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +38,7 @@ public class UserConversationActivity extends AppCompatActivity {
         pDialog = new ProgressDialog(UserConversationActivity.this);
         listView=(ListView)findViewById(R.id.list_conversation);
 
-        String userId = Integer.toString(Session.getInstance().getUserInfo(getSharedPreferences(Session.getInstance().PREFS_NAME, 0)).UserId);
+        userId = Integer.toString(Session.getInstance().getUserInfo(getSharedPreferences(Session.getInstance().PREFS_NAME, 0)).UserId);
         mAuthTask = new ConversationRenderingTask(userId);
         mAuthTask.execute((Void) null);
     }
@@ -101,20 +103,24 @@ public class UserConversationActivity extends AppCompatActivity {
 
     public void renderList(){
         ArrayList<ConversationModel> conModel = new ArrayList<ConversationModel>();
-        int userId = Session.getInstance().getUserInfo(getSharedPreferences(Session.getInstance().PREFS_NAME, 0)).UserId;
         for (UserConversationModel con : dataModels){
-            conModel.add(new ConversationModel(con.Id,con.ConversationID,con.SenderID,con.ReceiverID,con.MsgDate,con.MessageText,con.ReceiverName,con.SendererName,con.SenderImage,con.ReceiverImage,0));
+            conModel.add(new ConversationModel(con.Id,con.ConversationID,con.SenderID,con.ReceiverID,con.MsgDate,con.MessageText,con.ReceiverName,con.SendererName, con.SenderName,con.SenderImage,con.ReceiverImage,0));
         }
-        adapter= new UserConvAdapter(conModel,UserConversationActivity.this,userId);
+        adapter= new UserConvAdapter(conModel,UserConversationActivity.this,Integer.parseInt(userId));
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-
                 ConversationModel obj = (ConversationModel)parent.getAdapter().getItem(position);
-                //Toast.makeText(UserConversationActivity.this, "You Clicked at " + obj.getConversationID(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(UserConversationActivity.this,UserMessagesActivity.class);
+                intent.putExtra("ConId", Integer.toString(obj.getConversationID()));
+                String name = Integer.parseInt(userId) ==  obj.getSenderID() ? obj.getReceiverName() : obj.getSendererName();
+                int senderId = Integer.parseInt(userId) ==  obj.getSenderID() ? obj.getReceiverID() : obj.getSenderID();
+                intent.putExtra("OtherPerson", name);
+                intent.putExtra("OtherPersonId", Integer.toString(senderId));
+                startActivity(intent);
             }
         });
 

@@ -9,6 +9,7 @@ public class UserConversationModel {
     public String MessageText;
     public String ReceiverName;
     public String SendererName;
+    public String SenderName;
     public String SenderImage;
     public String ReceiverImage;
     public int MsgStatus;

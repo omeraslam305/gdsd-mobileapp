@@ -211,4 +211,28 @@ public class BackendAPI {
         return  conList;
     }
 
+    public static UserConversationModel postMessage(String senderId, String receiverId, String msgText){
+        UserConversationModel msgObj = new UserConversationModel();
+        try {
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+            nameValuePairs.add(new BasicNameValuePair("senderId", senderId));
+            nameValuePairs.add(new BasicNameValuePair("receiverId", receiverId));
+            nameValuePairs.add(new BasicNameValuePair("msgTxt", msgText));
+
+            String url = baseAddress + "PostMessage";
+            JSONObject jsonObj = jParser.makeHttpRequest(url, "POST", nameValuePairs);
+            Log.d("Message object: ", jsonObj.toString());
+
+            if (jsonObj != null){
+                if(Boolean.parseBoolean(jsonObj.getString(TAG_SUCCESS))){
+                    JSONObject dataObj = jsonObj.getJSONObject(TAG_DATA);
+                    JsonElement mJson =  new JsonParser().parse(dataObj.toString());
+                    msgObj = new Gson().fromJson(mJson, UserConversationModel.class);
+                }
+            }
+        } catch (Exception ex){
+            Log.d("Exception", ex.getMessage());
+        }
+        return  msgObj;
+    }
 }

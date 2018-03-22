@@ -5,35 +5,44 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.omer.testapplication.R;
 
 import java.util.ArrayList;
 
-public class UserMessageAdapter extends ArrayAdapter<ConversationModel> implements View.OnClickListener {
+public class UserMessageAdapter extends BaseAdapter {
     private ArrayList<ConversationModel> dataSet;
     Activity mContext;
     int mUserId;
 
     public UserMessageAdapter(ArrayList<ConversationModel> data, Activity context, int userId) {
-        super(context, R.layout.conversation_item, data);
+        //super(context, R.layout.conversation_item, data);
         this.dataSet = data;
         this.mContext=context;
         this.mUserId = userId;
     }
 
     @Override
-    public void onClick(View v) {
+    public long getItemId(int i) {
+        return i;
+    }
 
-        int position=(Integer) v.getTag();
-        Object object= getItem(position);
-        ConversationModel dataModel=(ConversationModel)object;
+    @Override
+    public Object getItem(int i) {
+        return dataSet.get(i);
+    }
 
-        switch (v.getId())
-        {
+    @Override
+    public int getCount() {
+        return dataSet.size();
+    }
 
-        }
+    public void updateReceiptsList(ArrayList<ConversationModel> newlist) {
+        dataSet.clear();
+        dataSet.addAll(newlist);
+        this.notifyDataSetChanged();
     }
 
     private int lastPosition = -1;
@@ -43,23 +52,24 @@ public class UserMessageAdapter extends ArrayAdapter<ConversationModel> implemen
         // Get the data item for this position
         View rowView;
         try {
-            ConversationModel dataModel = getItem(position);
-            //LayoutInflater inflater = mContext.getLayoutInflater();
+            ConversationModel dataModel = dataSet.get(position);
             LayoutInflater inflater = (LayoutInflater) mContext
                     .getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            rowView = inflater.inflate(R.layout.conversation_item,null);
 
-            TextView txtConvId = (TextView) rowView.findViewById(R.id.tv_conversation_id);
-            TextView txtUserId = (TextView) rowView.findViewById(R.id.tv_user_id);
-            TextView txtName = (TextView) rowView.findViewById(R.id.tv_name);
-            TextView txtMsgDate = (TextView) rowView.findViewById(R.id.tv_msg_date);
-            TextView txtMsgText = (TextView) rowView.findViewById(R.id.tv_msg_text);
-            txtMsgDate.setText(dataModel.getMsgDate());
-            txtName.setText(mUserId ==  dataModel.getSenderID() ? dataModel.getReceiverName() : dataModel.getSendererName());
-            txtUserId.setText(mUserId ==  dataModel.getSenderID() ? Integer.toString(dataModel.getReceiverID()) : Integer.toString(dataModel.getSenderID()));
-            txtMsgText.setText(dataModel.getMessageText());
-            txtConvId.setText(Integer.toString(dataModel.getConversationID()));
-            return rowView;
+            //current user
+            if(dataModel.getSenderID() == mUserId){
+                rowView = inflater.inflate(R.layout.my_message,null);
+                TextView txtMsgText = (TextView) rowView.findViewById(R.id.message_body);
+                txtMsgText.setText(dataModel.getMessageText());
+                return rowView;
+            }else{
+                rowView = inflater.inflate(R.layout.their_message,null);
+                TextView txtName = (TextView) rowView.findViewById(R.id.name);
+                TextView txtMsgText = (TextView) rowView.findViewById(R.id.message_body);
+                txtName.setText(mUserId ==  dataModel.getSenderID() ? dataModel.getReceiverName() : dataModel.getSenderName());
+                txtMsgText.setText(dataModel.getMessageText());
+                return rowView;
+            }
 
         } catch (Exception ex){
             ex.printStackTrace();
