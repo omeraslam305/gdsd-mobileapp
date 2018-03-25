@@ -41,7 +41,8 @@
         <activity android:name=".SignUpActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".UserConversationActivity" />
-        <activity android:name=".UserMessagesActivity"></activity>
+        <activity android:name=".UserMessagesActivity" />
+        <activity android:name=".AdDetailActivity"></activity>
     </application>
 
 </manifest>

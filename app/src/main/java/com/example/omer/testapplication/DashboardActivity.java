@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.example.omer.testapplication.api.BackendAPI;
 import com.example.omer.testapplication.api.Models.RealEstateAd;
 import com.example.omer.testapplication.api.Models.User;
+import com.example.omer.testapplication.classes.Adapters.ConversationModel;
 import com.example.omer.testapplication.classes.Adapters.RealEstateAdAdapter;
 import com.example.omer.testapplication.classes.Adapters.RealEstateAdModel;
 import com.example.omer.testapplication.classes.Session;
@@ -272,7 +273,10 @@ public class DashboardActivity extends AppCompatActivity
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                Toast.makeText(DashboardActivity.this, "You Clicked at ", Toast.LENGTH_SHORT).show();
+                RealEstateAdModel obj = (RealEstateAdModel)parent.getAdapter().getItem(position);
+                Intent intent = new Intent(DashboardActivity.this,AdDetailActivity.class);
+                intent.putExtra("listingId", Integer.toString(obj.getId()));
+                startActivity(intent);
 
             }
         });

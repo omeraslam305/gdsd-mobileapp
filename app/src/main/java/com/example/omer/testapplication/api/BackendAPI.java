@@ -2,6 +2,7 @@ package com.example.omer.testapplication.api;
 
 import android.util.Log;
 
+import com.example.omer.testapplication.api.Models.AdDetails;
 import com.example.omer.testapplication.api.Models.RealEstateAd;
 import com.example.omer.testapplication.api.Models.User;
 import com.example.omer.testapplication.api.Models.UserConversationModel;
@@ -24,7 +25,7 @@ import java.util.List;
 public class BackendAPI {
     private static WebClient jParser = new WebClient();
 //    private static String baseAddress = "http://ec2-54-200-111-60.us-west-2.compute.amazonaws.com:3000/api/";
-    private static String baseAddress = "http://192.168.159.1:3000/api/";
+    public static String baseAddress = "http://192.168.159.1:3000/api/";
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_DATA = "data";
 
@@ -235,4 +236,49 @@ public class BackendAPI {
         }
         return  msgObj;
     }
+
+    public static AdDetails getAdDetail(String listingId){
+        AdDetails adObj = new AdDetails();
+        try {
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+            nameValuePairs.add(new BasicNameValuePair("listing_id", listingId));
+
+            String url = baseAddress + "listing";
+            JSONObject jsonObj = jParser.makeHttpRequest(url, "GET", nameValuePairs);
+            Log.d("Ad object: ", jsonObj.toString());
+
+            if (jsonObj != null){
+                if(Boolean.parseBoolean(jsonObj.getString(TAG_SUCCESS))){
+                    JSONObject dataObj = jsonObj.getJSONObject(TAG_DATA);
+                    JsonElement mJson =  new JsonParser().parse(dataObj.toString());
+                    adObj = new Gson().fromJson(mJson, AdDetails.class);
+                }
+            }
+        } catch (Exception ex){
+            Log.d("Exception", ex.getMessage());
+        }
+        return  adObj;
+    }
+
+    public static Boolean markUnmarkFav(String adId, String userID, Boolean status){
+        Boolean response = false;
+        try {
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+            nameValuePairs.add(new BasicNameValuePair("AdID", adId));
+            nameValuePairs.add(new BasicNameValuePair("UserID", userID));
+            //nameValuePairs.add(new BasicNameValuePair("Status", status));
+
+            String url = baseAddress + "favoriteListing";
+            JSONObject jsonObj = jParser.makeHttpRequest(url, "POST", nameValuePairs);
+            Log.d("Message object: ", jsonObj.toString());
+
+            if (jsonObj != null){
+                response = Boolean.parseBoolean(jsonObj.getString(TAG_SUCCESS));
+            }
+        } catch (Exception ex){
+            Log.d("Exception", ex.getMessage());
+        }
+        return  response;
+    }
+
 }
