@@ -24,8 +24,8 @@ import java.util.List;
 
 public class BackendAPI {
     private static WebClient jParser = new WebClient();
-//    private static String baseAddress = "http://ec2-54-200-111-60.us-west-2.compute.amazonaws.com:3000/api/";
-    public static String baseAddress = "http://192.168.159.1:3000/api/";
+    public static String baseAddress = "http://ec2-54-200-111-60.us-west-2.compute.amazonaws.com:3000/api/";
+    //public static String baseAddress = "http://192.168.159.1:3000/api/";
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_DATA = "data";
 

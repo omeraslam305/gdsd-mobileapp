@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.omer.testapplication.api.BackendAPI;
@@ -31,6 +32,7 @@ import com.example.omer.testapplication.classes.Adapters.ConversationModel;
 import com.example.omer.testapplication.classes.Adapters.RealEstateAdAdapter;
 import com.example.omer.testapplication.classes.Adapters.RealEstateAdModel;
 import com.example.omer.testapplication.classes.Session;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +49,8 @@ public class DashboardActivity extends AppCompatActivity
     ListView listView;
     ArrayList<RealEstateAd> dataModels;
     private static RealEstateAdAdapter adapter;
+    ImageView imgUser;
+    TextView tvUsername;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +61,8 @@ public class DashboardActivity extends AppCompatActivity
         pDialog = new ProgressDialog(DashboardActivity.this);
         listView=(ListView)findViewById(R.id.list_ads);
         //Toast.makeText(this, "OnCreate: Session: " + Session.getInstance().isUserInSession(getSharedPreferences(PREFS_NAME, 0)), Toast.LENGTH_LONG).show();
+
+
 
         etSearchTxt = (EditText) findViewById(R.id.et_search);
         searchBtn = (ImageView) findViewById(R.id.img_search_ad);
@@ -86,7 +92,11 @@ public class DashboardActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View hView =  navigationView.getHeaderView(0);
+        imgUser = (ImageView)hView.findViewById(R.id.imageViewUser);
+        tvUsername = (TextView) hView.findViewById(R.id.textViewUserName);
         manageNavigationDrawerItems(Session.getInstance().isUserInSession(getSharedPreferences(Session.getInstance().PREFS_NAME, 0)));
+
         if (getIntent().getStringExtra("navigationFrom") != ""){
             String keyword = getIntent().getStringExtra("keyword");
             String accomodation = getIntent().getStringExtra("accomodation");
@@ -193,6 +203,12 @@ public class DashboardActivity extends AppCompatActivity
         nav_Menu.findItem(R.id.nav_login).setVisible(!isLoggedIn);
         nav_Menu.findItem(R.id.nav_messages).setVisible(isLoggedIn);
         nav_Menu.findItem(R.id.nav_logout).setVisible(isLoggedIn);
+        if(isLoggedIn){
+            User userInfo = Session.getInstance().getUserInfo(getSharedPreferences(Session.getInstance().PREFS_NAME, 0));
+            tvUsername.setText(userInfo.FirstName + " " + userInfo.LastName);
+            String imgPath = "http://ec2-54-200-111-60.us-west-2.compute.amazonaws.com:3000/" + userInfo.UserImagePath;
+            Picasso.with(this).load(imgPath).fit().into(imgUser);
+        }
     }
 
     private  void showProgress(boolean show){

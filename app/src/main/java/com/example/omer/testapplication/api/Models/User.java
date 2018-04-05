@@ -8,7 +8,7 @@ public class User {
     public String Email;
     public String Address;
     public String MobileNumber;
-    public String serImagePath;
+    public String UserImagePath;
     public int UserId;
     public int RealEstateCompanyId;
     public int UserStatusId;

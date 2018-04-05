@@ -75,7 +75,7 @@ public class RealEstateAdAdapter extends ArrayAdapter<RealEstateAdModel> impleme
             txtPrice.setText(dataModel.getPrice());
             txtArea.setText(dataModel.getArea());
             txtStatus.setText(dataModel.getAdStatus());
-            String imgPath = "http://192.168.159.1:3000/" + dataModel.getAdImage();
+            String imgPath = "\"http://ec2-54-200-111-60.us-west-2.compute.amazonaws.com:3000/" + dataModel.getAdImage();
             Picasso.with(getContext()).load(imgPath).fit().into(imgAd);
             return rowView;
 
