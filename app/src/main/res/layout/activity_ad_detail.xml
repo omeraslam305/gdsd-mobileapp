@@ -29,7 +29,7 @@
                 android:orientation="vertical"
                 android:padding="16dp">
                 <TextView
-                    android:id="@+id/tv_adtitle"
+                    android:id="@+id/tv_ad_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"

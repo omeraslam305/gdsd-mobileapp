@@ -45,7 +45,8 @@ public class BackendAPI {
                     JSONObject dataObj = jsonObj.getJSONObject(TAG_DATA);
                     JsonElement mJson =  new JsonParser().parse(dataObj.toString());
                     userObj = new Gson().fromJson(mJson, User.class);
-                }
+                } else
+                    userObj = null;
             }
         } catch (Exception ex){
             Log.d("Exception", ex.getMessage());
@@ -74,7 +75,8 @@ public class BackendAPI {
                     JSONObject dataObj = jsonObj.getJSONObject(TAG_DATA);
                     JsonElement mJson =  new JsonParser().parse(dataObj.toString());
                     userObj = new Gson().fromJson(mJson, User.class);
-                }
+                }else
+                    userObj = null;
             }
         } catch (Exception ex){
             Log.d("Exception", ex.getMessage());
@@ -260,13 +262,13 @@ public class BackendAPI {
         return  adObj;
     }
 
-    public static Boolean markUnmarkFav(String adId, String userID, Boolean status){
+    public static Boolean markUnmarkFav(String adId, String userID, String status){
         Boolean response = false;
         try {
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
             nameValuePairs.add(new BasicNameValuePair("AdID", adId));
             nameValuePairs.add(new BasicNameValuePair("UserID", userID));
-            //nameValuePairs.add(new BasicNameValuePair("Status", status));
+            nameValuePairs.add(new BasicNameValuePair("Status", status));
 
             String url = baseAddress + "favoriteListing";
             JSONObject jsonObj = jParser.makeHttpRequest(url, "POST", nameValuePairs);

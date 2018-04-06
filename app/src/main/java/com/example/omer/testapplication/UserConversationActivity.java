@@ -55,6 +55,15 @@ public class UserConversationActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        mAuthTask = new ConversationRenderingTask(userId);
+        mAuthTask.execute((Void) null);
+    }
+
+
     public class ConversationRenderingTask extends AsyncTask<Void, Void, Boolean> {
 
         private final String mUserId;

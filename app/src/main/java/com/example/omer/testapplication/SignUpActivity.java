@@ -142,11 +142,14 @@ public class SignUpActivity extends AppCompatActivity {
             BackendAPI backendAPI = new BackendAPI();
             User user = backendAPI.registerUser(mFname,mLname,mEmail,mMobile,mUsername,mPassword,mCpassword);
             if (user != null){
-                SharedPreferences settings = getSharedPreferences(Session.getInstance().PREFS_NAME, 0);
-                Session.getInstance().setUserInfo(user, settings);
+                if(user.UserId > 0) {
+                    SharedPreferences settings = getSharedPreferences(Session.getInstance().PREFS_NAME, 0);
+                    Session.getInstance().setUserInfo(user, settings);
+                    return true;
+                }
             }
             // TODO: register the new account here.
-            return user != null;
+            return false;
         }
 
         @Override

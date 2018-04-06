@@ -68,9 +68,9 @@ public class UserMessagesActivity extends AppCompatActivity {
         mAuthTask.execute((Void) null);
     }
 
-    private  void showProgress(boolean show){
+    private  void showProgress(boolean show, String message){
         if (show) {
-            pDialog.setMessage("Loading Messages. Please wait...");
+            pDialog.setMessage(message);
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(false);
             pDialog.show();
@@ -91,7 +91,7 @@ public class UserMessagesActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            showProgress(true);
+            showProgress(true,"Loading Messages. Please wait...");
         }
 
         @Override
@@ -111,7 +111,7 @@ public class UserMessagesActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
-            showProgress(false);
+            showProgress(false,"");
             if (success) {
                 renderList();
             } else {
@@ -151,7 +151,7 @@ public class UserMessagesActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            showProgress(true);
+            showProgress(true,"Sending Message. Please wait...");
         }
 
         @Override
@@ -175,7 +175,7 @@ public class UserMessagesActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
-            showProgress(false);
+            showProgress(false,"");
             if (success) {
                 etMessageText.setText("");
             } else {
@@ -195,8 +195,8 @@ public class UserMessagesActivity extends AppCompatActivity {
             UserMessagesActivity.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    adapter.notifyDataSetChanged();
-                    listView.setSelection(listView.getAdapter().getCount()-1);
+                adapter.notifyDataSetChanged();
+                listView.setSelection(listView.getAdapter().getCount()-1);
                 }
             });
         }

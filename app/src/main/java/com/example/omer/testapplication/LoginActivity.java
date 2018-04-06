@@ -193,11 +193,14 @@ public class LoginActivity extends AppCompatActivity {
             BackendAPI backendAPI = new BackendAPI();
             User user = backendAPI.authenticateUser(mEmail,mPassword);
             if (user != null){
-                SharedPreferences settings = getSharedPreferences(Session.getInstance().PREFS_NAME, 0);
-                Session.getInstance().setUserInfo(user, settings);
+                if(user.UserId > 0){
+                    SharedPreferences settings = getSharedPreferences(Session.getInstance().PREFS_NAME, 0);
+                    Session.getInstance().setUserInfo(user, settings);
+                    return true;
+                }
             }
             // TODO: register the new account here.
-            return user != null;
+            return false;
         }
 
         @Override

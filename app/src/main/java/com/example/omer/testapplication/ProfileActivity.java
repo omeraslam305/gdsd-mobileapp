@@ -33,6 +33,14 @@ public class ProfileActivity extends AppCompatActivity {
         etAddress = (EditText) findViewById(R.id.input_address);
         pDialog = new ProgressDialog(ProfileActivity.this);
 
+        User userInfo = Session.getInstance().getUserInfo(getSharedPreferences(Session.getInstance().PREFS_NAME, 0));
+        if(userInfo != null){
+            etFirstName.setText(userInfo.FirstName);
+            etLastName.setText(userInfo.LastName);
+            etEmail.setText(userInfo.Email);
+            etMobile.setText(userInfo.MobileNumber);
+            etAddress.setText(userInfo.Address);
+        }
 
         btnUpdate = (Button) findViewById(R.id.btn_updateprofile);
         btnUpdate.setOnClickListener(new View.OnClickListener() {

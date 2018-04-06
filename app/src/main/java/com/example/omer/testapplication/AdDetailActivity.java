@@ -18,7 +18,9 @@ import com.example.omer.testapplication.api.BackendAPI;
 import com.example.omer.testapplication.api.Models.AdDetails;
 import com.example.omer.testapplication.api.Models.AdvertisementMedia;
 import com.example.omer.testapplication.api.Models.RealEstateAd;
+import com.example.omer.testapplication.api.Models.User;
 import com.example.omer.testapplication.api.Models.UserConversationModel;
+import com.example.omer.testapplication.api.Models.UserFavourites;
 import com.example.omer.testapplication.classes.Adapters.ConversationModel;
 import com.example.omer.testapplication.classes.Adapters.RealEstateAdAdapter;
 import com.example.omer.testapplication.classes.Adapters.RealEstateAdModel;
@@ -56,6 +58,7 @@ public class AdDetailActivity extends AppCompatActivity implements OnMapReadyCal
     private FavTask mFavTask = null;
     String userId;
     double lat =  50.5558095, lang = 9.680844900000011;
+    String basePath = "http://ec2-54-200-111-60.us-west-2.compute.amazonaws.com:3000/";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
@@ -104,7 +107,7 @@ public class AdDetailActivity extends AppCompatActivity implements OnMapReadyCal
             btnMarkFav.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                mFavTask = new FavTask(true);
+                mFavTask = new FavTask("1");
                 mFavTask.execute();
                 }
             });
@@ -112,7 +115,7 @@ public class AdDetailActivity extends AppCompatActivity implements OnMapReadyCal
             btnUnmarkFav.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                mFavTask = new FavTask(false);
+                mFavTask = new FavTask("0");
                 mFavTask.execute();
                 }
             });
@@ -138,9 +141,9 @@ public class AdDetailActivity extends AppCompatActivity implements OnMapReadyCal
         map.animateCamera(yourLocation);
     }
 
-    private  void showProgress(boolean show){
+    private  void showProgress(boolean show, String message){
         if (show) {
-            pDialog.setMessage("Loading Ads. Please wait...");
+            pDialog.setMessage(message);
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(false);
             pDialog.show();
@@ -161,7 +164,7 @@ public class AdDetailActivity extends AppCompatActivity implements OnMapReadyCal
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            showProgress(true);
+            showProgress(true,"Loading Ads. Please wait...");
         }
 
         @Override
@@ -180,7 +183,7 @@ public class AdDetailActivity extends AppCompatActivity implements OnMapReadyCal
         @Override
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
-            showProgress(false);
+            showProgress(false,"");
             if (success) {
                 renderAd();
             } else {
@@ -197,26 +200,26 @@ public class AdDetailActivity extends AppCompatActivity implements OnMapReadyCal
     public void renderAd(){
         tvAdTitle.setText(dataModel.Title);
         tvAdDescription.setText(dataModel.AdDescription);
-        tvAdBed.setText(dataModel.BedRooms);
-        tvBathroom.setText(dataModel.BathRooms);
-        tvKitchen.setText(dataModel.Kitchen);
-        tvArea.setText(dataModel.SquareFeet);
-        tvParking.setText(dataModel.Parking);
-        tvType.setText(dataModel.AdType.AdTypeName);
-        tvPrice.setText(dataModel.Price);
-        tvFloors.setText(dataModel.NumOfFloors);
-        tvLivingRooms.setText(dataModel.LivingRooms);
-        tvLotArea.setText(dataModel.LotArea);
+        tvAdBed.setText("Beds: " + Integer.toString(dataModel.BedRooms));
+        tvBathroom.setText("Bathrooms: " + Integer.toString(dataModel.BathRooms));
+        tvKitchen.setText("Kitchen: " + Integer.toString(dataModel.Kitchen));
+        tvArea.setText("Area: " + Integer.toString(dataModel.SquareFeet));
+        tvParking.setText(dataModel.Parking == 1 ? "Parking: Yes" : "Parking: No");
+        tvType.setText("Property Type: " + dataModel.AdType.AdTypeName);
+        tvPrice.setText("Price: " + Integer.toString(dataModel.Price));
+        tvFloors.setText("Floors: " + Integer.toString(dataModel.NumOfFloors));
+        tvLivingRooms.setText("Living Rooms: " + Integer.toString(dataModel.LivingRooms));
+        tvLotArea.setText("Area: " + Integer.toString(dataModel.LotArea));
         tvAddress.setText(dataModel.Address);
         tvAgentName.setText(dataModel.AgentName);
 
         for (AdvertisementMedia image : dataModel.AdMedia){
             SliderUtils sliderUtils = new SliderUtils();
-            sliderUtils.setSliderImageUrl(BackendAPI.baseAddress + image.ImagePath);
+            sliderUtils.setSliderImageUrl(basePath + image.ImagePath);
             sliderImg.add(sliderUtils);
         }
 
-        String imgPath = BackendAPI.baseAddress + dataModel.AgentImage;
+        String imgPath = basePath + dataModel.AgentImage;
         Picasso.with(AdDetailActivity.this).load(imgPath).fit().into(agentImage);
         viewPagerAdapter = new ViewPagerAdapter(sliderImg, AdDetailActivity.this);
 
@@ -229,9 +232,18 @@ public class AdDetailActivity extends AppCompatActivity implements OnMapReadyCal
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        User userInfo = Session.getInstance().getUserInfo(getSharedPreferences(Session.getInstance().PREFS_NAME, 0));
         int userTypeId = Session.getInstance().getUserInfo(getSharedPreferences(Session.getInstance().PREFS_NAME, 0)).UserTypeId;
         if(userTypeId == 1){ //Customer
-            Boolean isAdFavourite = dataModel.FavouriteAds.contains(listingId);
+            //Boolean isAdFavourite = dataModel.FavouriteAds.stream().filter(p -> p.UserUserId > 1).collect(Collectors.toList());
+            Boolean isAdFavourite = false;
+            for (UserFavourites favAds : dataModel.FavouriteAds){
+                if(favAds.UserUserId == userInfo.UserId){
+                    isAdFavourite = true;
+                    break;
+                }
+            }
+
             if(isAdFavourite){
                 btnMarkFav.setVisibility(View.GONE);
                 btnUnmarkFav.setVisibility(View.VISIBLE);
@@ -265,7 +277,7 @@ public class AdDetailActivity extends AppCompatActivity implements OnMapReadyCal
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            showProgress(true);
+            showProgress(true,"Sending Message. Please wait...");
         }
 
         @Override
@@ -286,7 +298,7 @@ public class AdDetailActivity extends AppCompatActivity implements OnMapReadyCal
         @Override
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
-            showProgress(false);
+            showProgress(false,"");
             if (success) {
                 etMsg.setText("");
                 Toast.makeText(AdDetailActivity.this, "Message sent to agent.", Toast.LENGTH_LONG).show();
@@ -303,16 +315,16 @@ public class AdDetailActivity extends AppCompatActivity implements OnMapReadyCal
 
     public class FavTask extends AsyncTask<Void, Void, Boolean> {
 
-        private final Boolean mMarkFav;
+        private final String mMarkFav;
 
-        FavTask(Boolean markFav) {
+        FavTask(String markFav) {
             mMarkFav = markFav;
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            showProgress(true);
+            showProgress(true,"Please wait..");
         }
 
         @Override
@@ -332,9 +344,10 @@ public class AdDetailActivity extends AppCompatActivity implements OnMapReadyCal
         @Override
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
-            showProgress(false);
+            showProgress(false,"");
             if (success) {
-                renderAd();
+                mAuthTask = new AdDetailTask(listingId);
+                mAuthTask.execute();
             } else {
 
             }
