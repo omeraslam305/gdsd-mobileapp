@@ -27,10 +27,12 @@
     <string name="adtype_prompt">Select</string>
 
     <string-array name="accomodation_arrays">
+        <item>-Select-</item>
         <item>House</item>
         <item>Flat</item>
     </string-array>
     <string-array name="bed_arrays">
+        <item>-Select-</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>
@@ -38,6 +40,7 @@
         <item>5</item>
     </string-array>
     <string-array name="adtype_arrays">
+        <item>-Select-</item>
         <item>Rental</item>
         <item>Buy</item>
     </string-array>

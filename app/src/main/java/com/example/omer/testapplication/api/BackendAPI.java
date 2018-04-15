@@ -1,11 +1,13 @@
 package com.example.omer.testapplication.api;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.example.omer.testapplication.api.Models.AdDetails;
 import com.example.omer.testapplication.api.Models.RealEstateAd;
 import com.example.omer.testapplication.api.Models.User;
 import com.example.omer.testapplication.api.Models.UserConversationModel;
+import com.example.omer.testapplication.util.AsyncWebClient;
 import com.example.omer.testapplication.util.WebClient;
 
 import org.apache.http.NameValuePair;

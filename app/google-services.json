@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "469705388669",
+    "firebase_url": "https://fir-demo-91215.firebaseio.com",
+    "project_id": "fir-demo-91215",
+    "storage_bucket": "fir-demo-91215.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:469705388669:android:64f68fc846dc62bc",
+        "android_client_info": {
+          "package_name": "com.example.omer.testapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "469705388669-sjlf56qas80q77tf34upao0nqdhgjvbd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNXxO-p9UiJHLlVmnKT1cct09SKI3orOw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:469705388669:android:f63b92224718af41",
+        "android_client_info": {
+          "package_name": "com.hsf.omer.imageslider"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "469705388669-sjlf56qas80q77tf34upao0nqdhgjvbd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNXxO-p9UiJHLlVmnKT1cct09SKI3orOw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

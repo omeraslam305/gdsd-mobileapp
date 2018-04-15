@@ -37,10 +37,10 @@ public class AdvancedSearchActivity extends AppCompatActivity {
 
     public void searchAd(){
         String keyword = etKeyword.getText().toString();
-        String accomodation = spAccomodation.getSelectedItem().toString().equals("Flat") ? "2" : "1";
-        String bedrooms = spBedrooms.getSelectedItem().toString();
+        String accomodation = spAccomodation.getSelectedItem().toString().equals("-Select-") ? "" : ( spAccomodation.getSelectedItem().toString().equals("Flat") ? "2" : "1" ) ;
+        String bedrooms = spBedrooms.getSelectedItem().toString().equals("-Select-") ? "" : spBedrooms.getSelectedItem().toString();
         String sqft = etSqft.getText().toString();
-        String adType = spAdType.getSelectedItem().toString().equals("Rental") ? "1" : "2";
+        String adType = spAdType.getSelectedItem().toString().equals("-Select-") ? "" : ( spAdType.getSelectedItem().toString().equals("Rental") ? "1" : "2" );
 
         Intent intent = new Intent(AdvancedSearchActivity.this,DashboardActivity.class);
         intent.putExtra("navigationFrom","AS");
